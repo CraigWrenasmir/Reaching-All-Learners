@@ -203,11 +203,13 @@
         .collage-lego      { width: 70%; left: 21%; top: 57%; z-index: 3; transform: rotate(1.5deg); }
 
         /* Tech-over-time row (Tech 1 -> 2 -> 3, fade in on steps) */
+        .tech-wide { max-width: min(1300px, 96vw); }
+
         .tech-row {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: clamp(10px, 1.8vw, 26px);
+            gap: clamp(8px, 1.4vw, 20px);
             flex-wrap: nowrap;
         }
 
@@ -215,7 +217,7 @@
 
         .tech-img {
             display: block;
-            height: clamp(190px, 40vh, 330px);
+            height: clamp(210px, 46vh, 380px);
             width: auto;
             border: 6px solid #fff;
             border-radius: 10px;
@@ -223,9 +225,19 @@
             background: #fff;
         }
 
+        /* Cut-out image (transparent PNG, e.g. the phone) — no white frame */
+        .tech-img.tech-cutout {
+            height: clamp(240px, 52vh, 430px);
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            filter: drop-shadow(0 12px 24px rgba(107, 107, 157, 0.35));
+        }
+
         .tech-arrow {
             flex: 0 0 auto;
-            width: clamp(26px, 3.2vw, 52px);
+            width: clamp(24px, 2.6vw, 44px);
             height: auto;
             color: var(--lavender-deep);
         }
@@ -1691,7 +1703,7 @@
 
         <!-- Tech over time: Tech 1 -> Tech 2 -> Tech 3 (fade in on tap) -->
         <section class="slide slide-wide" data-slide="6" data-steps="2">
-            <div class="slide-inner">
+            <div class="slide-inner tech-wide">
                 <div class="tech-row">
                     <figure class="tech-item">
                         <img src="tech-1.png" alt="A late-1990s desktop computer: CRT monitor, beige tower, keyboard and mouse" class="tech-img">
@@ -1702,7 +1714,7 @@
                     </figure>
                     <svg class="tech-arrow tech-step s2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
                     <figure class="tech-item tech-step s2">
-                        <img src="tech-3.png" alt="A smartphone app showing a step-by-step grocery shopping routine with photos" class="tech-img">
+                        <img src="tech-3-cutout.png" alt="A smartphone app showing a step-by-step grocery shopping routine with photos" class="tech-img tech-cutout">
                     </figure>
                 </div>
             </div>
