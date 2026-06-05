@@ -202,6 +202,49 @@
         .collage-minecraft { width: 56%; left: 44%; top: 4%;  z-index: 2; transform: rotate(3deg); }
         .collage-lego      { width: 70%; left: 21%; top: 57%; z-index: 3; transform: rotate(1.5deg); }
 
+        /* Tech-over-time row (Tech 1 -> 2 -> 3, fade in on steps) */
+        .tech-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(10px, 1.8vw, 26px);
+            flex-wrap: nowrap;
+        }
+
+        .tech-item { margin: 0; flex: 0 0 auto; }
+
+        .tech-img {
+            display: block;
+            height: clamp(190px, 40vh, 330px);
+            width: auto;
+            border: 6px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 12px 30px rgba(107, 107, 157, 0.28);
+            background: #fff;
+        }
+
+        .tech-arrow {
+            flex: 0 0 auto;
+            width: clamp(26px, 3.2vw, 52px);
+            height: auto;
+            color: var(--lavender-deep);
+        }
+
+        /* Hidden until the matching step is reached, then fade in */
+        .tech-step {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+        .slide.step-1 .tech-step.s1 { opacity: 1; transform: none; }
+        .slide.step-2 .tech-step.s2 { opacity: 1; transform: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tech-step { transition: opacity 0.15s ease; transform: none; }
+            .slide.step-1 .tech-step.s1,
+            .slide.step-2 .tech-step.s2 { transform: none; }
+        }
+
         /* --- Section headings --- */
         .slide-heading {
             font-family: 'Space Mono', monospace;
@@ -1646,7 +1689,27 @@
             </div>
         </section>
 
-        <section class="slide slide-wide" data-slide="6">
+        <!-- Tech over time: Tech 1 -> Tech 2 -> Tech 3 (fade in on tap) -->
+        <section class="slide slide-wide" data-slide="6" data-steps="2">
+            <div class="slide-inner">
+                <div class="tech-row">
+                    <figure class="tech-item">
+                        <img src="tech-1.png" alt="A late-1990s desktop computer: CRT monitor, beige tower, keyboard and mouse" class="tech-img">
+                    </figure>
+                    <svg class="tech-arrow tech-step s1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+                    <figure class="tech-item tech-step s1">
+                        <img src="tech-2.png" alt="A printed paper grocery checklist with photos of items and how-many columns" class="tech-img">
+                    </figure>
+                    <svg class="tech-arrow tech-step s2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+                    <figure class="tech-item tech-step s2">
+                        <img src="tech-3.png" alt="A smartphone app showing a step-by-step grocery shopping routine with photos" class="tech-img">
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="slide slide-wide" data-slide="7">
             <div class="slide-inner">
                 <h2 class="slide-heading">
                     <span class="section-dot-lg" style="background:var(--snes-yellow)"></span>
@@ -1675,12 +1738,12 @@
                 </div>
             </div>
         </section>
-        <section class="slide slide-image" data-slide="7">
+        <section class="slide slide-image" data-slide="8">
             <div class="slide-inner">
                 <img src="ladder-cartoon.png" alt="Three-panel cartoon: a boy climbs a wooden ladder happily, then struggles partway up, then a robot arrives and the ladder rungs light up.">
             </div>
         </section>
-        <section class="slide slide-wide" data-slide="8" data-steps="1">
+        <section class="slide slide-wide" data-slide="9" data-steps="1">
             <div class="slide-inner">
                 <h2 class="slide-heading">
                     <span class="section-dot-lg" style="background:var(--snes-red)"></span>
@@ -1709,7 +1772,7 @@
                 </p>
             </div>
         </section>
-        <section class="slide" data-slide="9">
+        <section class="slide" data-slide="10">
             <div class="slide-inner sandpit-stage">
                 <img src="sandpit-logo.png" alt="The Universal Sandpit" class="sandpit-logo">
                 <a href="https://theuniversalsandpit.org" target="_blank" rel="noopener" class="sandpit-link">
