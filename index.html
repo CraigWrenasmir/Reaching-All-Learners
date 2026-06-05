@@ -257,6 +257,25 @@
             .slide.step-2 .tech-step.s2 { transform: none; }
         }
 
+        /* Alongside feature gif */
+        .alongside-figure {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .alongside-figure img {
+            width: 100%;
+            height: auto;
+            max-height: 54vh;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 6px solid #fff;
+            box-shadow: 0 12px 30px rgba(107, 107, 157, 0.28);
+            background: #fff;
+        }
+
         /* --- Section headings --- */
         .slide-heading {
             font-family: 'Space Mono', monospace;
@@ -2264,6 +2283,10 @@ SITUATION: [e.g. starting at a new school, working with a partner, a fire drill]
                         <span class="toc-num" style="color: var(--lavender)">04</span>
                         <span><span class="toc-name">Pathway</span><span class="toc-tag">From how you feel to how you'd like to feel</span></span>
                     </li>
+                    <li class="toc-row">
+                        <span class="toc-num" style="color: var(--snes-orange)">05</span>
+                        <span><span class="toc-name">Alongside</span><span class="toc-tag">A calm body-doubling companion for focus</span></span>
+                    </li>
                 </ul>
             </div>
         </section>
@@ -2274,6 +2297,7 @@ SITUATION: [e.g. starting at a new school, working with a partner, a fire drill]
                     <span class="toolbox-pill">First Strings</span>
                     <span class="toolbox-pill">Spoon Theory Planner</span>
                     <span class="toolbox-pill">Pathway</span>
+                    <span class="toolbox-pill">Alongside</span>
                 </div>
                 <h2 class="slide-heading" style="margin-bottom: 36px;">
                     <span class="section-dot-lg" style="background:var(--snes-green)"></span>
@@ -2316,6 +2340,7 @@ ASSIGNMENT:
                     <span class="toolbox-pill current">First Strings</span>
                     <span class="toolbox-pill">Spoon Theory Planner</span>
                     <span class="toolbox-pill">Pathway</span>
+                    <span class="toolbox-pill">Alongside</span>
                 </div>
                 <h2 class="slide-heading" style="margin-bottom: 36px;">
                     <span class="section-dot-lg" style="background:var(--snes-blue)"></span>
@@ -2358,6 +2383,7 @@ TASK:
                     <span class="toolbox-pill done">First Strings</span>
                     <span class="toolbox-pill current">Spoon Theory Planner</span>
                     <span class="toolbox-pill">Pathway</span>
+                    <span class="toolbox-pill">Alongside</span>
                 </div>
                 <h2 class="slide-heading" style="margin-bottom: 36px;">
                     <span class="section-dot-lg" style="background:var(--snes-red)"></span>
@@ -2400,6 +2426,7 @@ WHAT I'D LIKE TO DO: [list your tasks and any self-care]">
                     <span class="toolbox-pill done">First Strings</span>
                     <span class="toolbox-pill done">Spoon Theory Planner</span>
                     <span class="toolbox-pill current">Pathway</span>
+                    <span class="toolbox-pill">Alongside</span>
                 </div>
                 <h2 class="slide-heading" style="margin-bottom: 36px;">
                     <span class="section-dot-lg" style="background:var(--lavender)"></span>
@@ -2436,8 +2463,43 @@ WANT TO FEEL: [name where you're trying to get to]">
             </div>
         </section>
 
-        <!-- Your Plus One -->
+        <!-- Alongside (5/5 in student tools toolbox) -->
         <section class="slide slide-wide" data-slide="28">
+            <div class="slide-inner">
+                <div class="toolbox-progress">
+                    <span class="toolbox-pill done">Floating Thoughts</span>
+                    <span class="toolbox-pill done">First Strings</span>
+                    <span class="toolbox-pill done">Spoon Theory Planner</span>
+                    <span class="toolbox-pill done">Pathway</span>
+                    <span class="toolbox-pill current">Alongside</span>
+                </div>
+                <h2 class="slide-heading" style="margin-bottom: 36px;">
+                    <span class="section-dot-lg" style="background:var(--snes-orange)"></span>
+                    Someone to work alongside
+                </h2>
+                <div class="planner-grid">
+                    <figure class="alongside-figure">
+                        <img src="alongside-loop.gif" alt="Pixel-art animation of a person quietly working at a desk — a body-doubling focus companion">
+                    </figure>
+                    <div class="planner-card tool">
+                        <div class="planner-label">// Tool &mdash; The Universal Sandpit</div>
+                        <h3 class="planner-title">Alongside</h3>
+                        <ul class="planner-bullets">
+                            <li>A quiet companion who works while you work</li>
+                            <li>Body-doubling to help you start &mdash; and stay with &mdash; a task</li>
+                            <li>Choose a scene, press play, and settle in</li>
+                        </ul>
+                        <a href="https://tools.theuniversalsandpit.org/alongside" target="_blank" rel="noopener" class="btn-sm">
+                            Open tool
+                            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Your Plus One -->
+        <section class="slide slide-wide" data-slide="29">
             <div class="slide-inner" style="text-align: center;">
                 <div class="plus-one-badge">+1</div>
                 <h2 class="slide-heading" style="margin-bottom: 16px;">
@@ -2463,7 +2525,7 @@ WANT TO FEEL: [name where you're trying to get to]">
             </div>
         </section>
 
-        <section class="slide" data-slide="29">
+        <section class="slide" data-slide="30">
             <div class="slide-inner sandpit-stage">
                 <img src="sandpit-logo.png" alt="The Universal Sandpit" class="sandpit-logo">
                 <a href="https://theuniversalsandpit.org" target="_blank" rel="noopener" class="sandpit-link">
