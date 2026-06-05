@@ -180,6 +180,29 @@
             box-shadow: 0 14px 36px rgba(107, 107, 157, 0.28);
         }
 
+        /* Scrapbook collage (special-interests slide) */
+        .collage-stage {
+            position: relative;
+            width: min(1000px, 92%);
+            aspect-ratio: 16 / 9;
+            margin: 0 auto;
+        }
+
+        .collage-item {
+            position: absolute;
+            display: block;
+            height: auto;
+            border: 7px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 12px 30px rgba(107, 107, 157, 0.30);
+            background: #fff;
+        }
+
+        .collage-tiger     { width: 29%; left: 1%;  top: 7%;  z-index: 1; transform: rotate(-4deg); }
+        .collage-minecraft { width: 41%; left: 34%; top: 3%;  z-index: 2; transform: rotate(3deg); }
+        .collage-pokemon   { width: 37%; left: 59%; top: 38%; z-index: 3; transform: rotate(-3deg); }
+        .collage-lego      { width: 60%; left: 12%; top: 56%; z-index: 4; transform: rotate(1.5deg); }
+
         /* --- Section headings --- */
         .slide-heading {
             font-family: 'Space Mono', monospace;
@@ -1554,7 +1577,20 @@
                 </div>
             </div>
         </section>
+
+        <!-- Special interests collage (Tiger / Minecraft / Lego / Pokemon) -->
         <section class="slide slide-wide" data-slide="3">
+            <div class="slide-inner">
+                <div class="collage-stage">
+                    <img src="tiger-head.jpeg" alt="Craig kneeling beside a child wearing a large Frosties tiger mascot head in a playground" class="collage-item collage-tiger">
+                    <img src="Minecraft.jpeg" alt="Two people wearing cardboard Minecraft heads in the bush, one pointing at a tablet" class="collage-item collage-minecraft">
+                    <img src="Pokemon.jpeg" alt="Magazine feature 'Augmented reality check' about Craig Smith using Pokemon Go in the classroom" class="collage-item collage-pokemon">
+                    <img src="Lego.jpeg" alt="A green Lego wall spelling 'LEGO GREEN WALL' with minifigures and wellbeing prompts" class="collage-item collage-lego">
+                </div>
+            </div>
+        </section>
+
+        <section class="slide slide-wide" data-slide="4">
             <div class="slide-inner">
                 <h2 class="slide-heading">
                     <span class="section-dot-lg" style="background:var(--snes-yellow)"></span>
@@ -1583,12 +1619,12 @@
                 </div>
             </div>
         </section>
-        <section class="slide slide-image" data-slide="4">
+        <section class="slide slide-image" data-slide="5">
             <div class="slide-inner">
                 <img src="ladder-cartoon.png" alt="Three-panel cartoon: a boy climbs a wooden ladder happily, then struggles partway up, then a robot arrives and the ladder rungs light up.">
             </div>
         </section>
-        <section class="slide slide-wide" data-slide="5" data-steps="1">
+        <section class="slide slide-wide" data-slide="6" data-steps="1">
             <div class="slide-inner">
                 <h2 class="slide-heading">
                     <span class="section-dot-lg" style="background:var(--snes-red)"></span>
@@ -1617,7 +1653,7 @@
                 </p>
             </div>
         </section>
-        <section class="slide" data-slide="6">
+        <section class="slide" data-slide="7">
             <div class="slide-inner sandpit-stage">
                 <img src="sandpit-logo.png" alt="The Universal Sandpit" class="sandpit-logo">
                 <a href="https://theuniversalsandpit.org" target="_blank" rel="noopener" class="sandpit-link">
