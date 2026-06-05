@@ -163,6 +163,23 @@
             );
         }
 
+        /* Landscape title photo (e.g. Craig in the garden) */
+        .title-photo-frame {
+            margin: 36px auto 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .title-photo {
+            display: block;
+            max-height: clamp(240px, 42vh, 440px);
+            width: auto;
+            max-width: 78%;
+            border-radius: 18px;
+            border: 6px solid #fff;
+            box-shadow: 0 14px 36px rgba(107, 107, 157, 0.28);
+        }
+
         /* --- Section headings --- */
         .slide-heading {
             font-family: 'Space Mono', monospace;
@@ -1510,8 +1527,11 @@
             <div class="slide-inner">
                 <h1>Reaching All Learners</h1>
                 <p class="subtitle">Craig Smith</p>
-                <div class="affiliation">[affiliation TBC]</div>
+                <div class="affiliation">The Universal Sandpit</div>
                 <div class="rainbow-bar"></div>
+                <div class="title-photo-frame">
+                    <img src="craig-title.png" alt="Craig in a tiger mask holding a tablet in a garden, gesturing toward a chicken coop" class="title-photo">
+                </div>
             </div>
         </section>
 
