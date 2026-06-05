@@ -180,6 +180,17 @@
             box-shadow: 0 14px 36px rgba(107, 107, 157, 0.28);
         }
 
+        /* Self-playing snake on the title slide (sits behind the content) */
+        .snake-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .slide-title .slide-inner { position: relative; z-index: 1; }
+
         /* Scrapbook collage (special-interests slide) */
         .collage-stage {
             position: relative;
@@ -1652,6 +1663,7 @@
 
         <!-- Slide 1: Title -->
         <section class="slide slide-title active" data-slide="1">
+            <canvas id="snakeCanvas" class="snake-canvas" aria-hidden="true"></canvas>
             <div class="slide-inner">
                 <h1>Reaching All Learners</h1>
                 <p class="subtitle">Craig Smith</p>
@@ -2813,6 +2825,182 @@ WANT TO FEEL: [name where you're trying to get to]">
                     }
                 });
             });
+        })();
+    </script>
+
+    <!-- Self-playing snake on the title slide -->
+    <script>
+        (function () {
+            var canvas = document.getElementById('snakeCanvas');
+            if (!canvas) return;
+            var section = canvas.closest('.slide');
+            var ctx = canvas.getContext('2d');
+            var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            var CELL = 26;                 // grid cell size in CSS px
+            var COLORS = ['#5ab97a', '#5a7ec2', '#9090c0', '#e8c547', '#d64a4a', '#cc785c'];
+            var cols, rows, snake, dir, food, offx, offy;
+            var dpr = Math.max(1, window.devicePixelRatio || 1);
+            var lastStep = 0, stepMs = 95;
+
+            function k(c) { return c.x + ',' + c.y; }
+
+            function resize() {
+                var w = section.clientWidth, h = section.clientHeight;
+                if (!w || !h) return;
+                canvas.width = Math.round(w * dpr);
+                canvas.height = Math.round(h * dpr);
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                cols = Math.max(8, Math.floor(w / CELL));
+                rows = Math.max(6, Math.floor(h / CELL));
+                offx = (w - cols * CELL) / 2;
+                offy = (h - rows * CELL) / 2;
+                init();
+            }
+
+            function init() {
+                if (!cols || !rows) return;
+                var cx = Math.floor(cols / 2), cy = Math.max(1, Math.floor(rows * 0.18)); // start in the open upper band
+                snake = [{ x: cx + 1, y: cy }, { x: cx, y: cy }, { x: cx - 1, y: cy }]; // head first
+                dir = { x: 1, y: 0 };
+                placeFood();
+            }
+
+            function occupied(ignoreTail) {
+                var set = {}, n = snake.length - (ignoreTail ? 1 : 0);
+                for (var i = 0; i < n; i++) set[k(snake[i])] = true;
+                return set;
+            }
+
+            function neighbors(c) {
+                return [{ x: c.x + 1, y: c.y }, { x: c.x - 1, y: c.y }, { x: c.x, y: c.y + 1 }, { x: c.x, y: c.y - 1 }]
+                    .filter(function (n) { return n.x >= 0 && n.y >= 0 && n.x < cols && n.y < rows; });
+            }
+
+            function placeFood() {
+                var occ = occupied(false), free = [];
+                for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) if (!occ[x + ',' + y]) free.push({ x: x, y: y });
+                food = free.length ? free[Math.floor(Math.random() * free.length)] : null;
+            }
+
+            // Breadth-first search: first step from head toward goal, avoiding blocked cells
+            function bfsNext(start, goal, blocked) {
+                var q = [start], prev = {}, gk = k(goal);
+                prev[k(start)] = null;
+                while (q.length) {
+                    var cur = q.shift();
+                    if (k(cur) === gk) break;
+                    var nb = neighbors(cur);
+                    for (var i = 0; i < nb.length; i++) {
+                        var nk = k(nb[i]);
+                        if (nk in prev) continue;
+                        if (blocked[nk] && nk !== gk) continue;
+                        prev[nk] = cur; q.push(nb[i]);
+                    }
+                }
+                if (!(gk in prev)) return null;
+                var n = goal, first = null;
+                while (n && k(n) !== k(start)) { first = n; n = prev[k(n)]; }
+                return first;
+            }
+
+            function floodCount(start, blocked) {
+                var seen = {}, q = [start], c = 0;
+                seen[k(start)] = 1;
+                while (q.length && c < 240) {
+                    var cur = q.shift(); c++;
+                    var nb = neighbors(cur);
+                    for (var i = 0; i < nb.length; i++) {
+                        var nk = k(nb[i]);
+                        if (nk in seen || blocked[nk]) continue;
+                        seen[nk] = 1; q.push(nb[i]);
+                    }
+                }
+                return c;
+            }
+
+            function chooseDir() {
+                var head = snake[0], blocked = occupied(true);
+                var next = food && bfsNext(head, food, blocked);
+                if (next) { dir = { x: next.x - head.x, y: next.y - head.y }; return; }
+                // survival: head toward the most open space
+                var opts = neighbors(head).filter(function (n) { return !blocked[k(n)]; });
+                if (!opts.length) { init(); return; }
+                opts.sort(function (a, b) { return floodCount(b, blocked) - floodCount(a, blocked); });
+                dir = { x: opts[0].x - head.x, y: opts[0].y - head.y };
+            }
+
+            function step() {
+                if (!snake) return;
+                chooseDir();
+                var head = snake[0], nh = { x: head.x + dir.x, y: head.y + dir.y };
+                if (nh.x < 0 || nh.y < 0 || nh.x >= cols || nh.y >= rows || occupied(true)[k(nh)]) { init(); return; }
+                snake.unshift(nh);
+                if (food && nh.x === food.x && nh.y === food.y) {
+                    var cap = Math.min(42, Math.floor(cols * rows * 0.35));
+                    if (snake.length >= cap) { init(); return; }   // full enough — start a fresh game
+                    placeFood();
+                } else {
+                    snake.pop();
+                }
+            }
+
+            function roundRect(x, y, w, h, r, fill, alpha) {
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = fill;
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.arcTo(x + w, y, x + w, y + h, r);
+                ctx.arcTo(x + w, y + h, x, y + h, r);
+                ctx.arcTo(x, y + h, x, y, r);
+                ctx.arcTo(x, y, x + w, y, r);
+                ctx.closePath();
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+
+            function draw() {
+                if (!snake) return;
+                var w = section.clientWidth, h = section.clientHeight;
+                ctx.clearRect(0, 0, w, h);
+                // faint grid dots
+                ctx.fillStyle = 'rgba(107,107,157,0.09)';
+                for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) {
+                    ctx.beginPath();
+                    ctx.arc(offx + x * CELL + CELL / 2, offy + y * CELL + CELL / 2, 1.5, 0, 6.2832);
+                    ctx.fill();
+                }
+                // food
+                if (food) {
+                    var fx = offx + food.x * CELL + CELL / 2, fy = offy + food.y * CELL + CELL / 2;
+                    roundRectCircle(fx, fy, CELL * 0.5, 'rgba(214,74,74,0.16)');
+                    roundRectCircle(fx, fy, CELL * 0.28, 'rgba(214,74,74,0.8)');
+                }
+                // snake (rainbow body, brighter head)
+                for (var i = snake.length - 1; i >= 0; i--) {
+                    var s = snake[i];
+                    roundRect(offx + s.x * CELL + 2, offy + s.y * CELL + 2, CELL - 4, CELL - 4, 6,
+                        COLORS[i % COLORS.length], i === 0 ? 0.92 : 0.7);
+                }
+            }
+
+            function roundRectCircle(cx, cy, r, fill) {
+                ctx.globalAlpha = 1; ctx.fillStyle = fill;
+                ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.fill();
+            }
+
+            function frame(t) {
+                requestAnimationFrame(frame);
+                if (document.hidden || !section.classList.contains('active')) return;
+                if (t - lastStep >= stepMs) { lastStep = t; if (!reduce) step(); }
+                draw();
+            }
+
+            resize();
+            window.addEventListener('resize', resize);
+            requestAnimationFrame(frame);
         })();
     </script>
 
